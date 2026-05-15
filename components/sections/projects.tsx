@@ -7,51 +7,51 @@ import { useState } from "react"
 
 const projects = [
   {
-    id: 1,
-    title: "Centro Comercial Plaza Norte",
-    category: "Comercial",
-    location: "Ciudad de México",
-    year: "2024",
-    area: "45,000 m²",
-    description:
-      "Complejo comercial de última generación con espacios verdes y tecnología sustentable.",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
-    status: "En progreso",
+  id: 1,
+  title: "Centro Comercial Plaza Norte",
+  category: "Infraestructura",
+  location: "",
+  year: "20",
+  area: "",
+  description:
+    "Complejo comercial de última generación con espacios verdes y tecnología sustentable.",
+  image: "/images/imagencumicsa 1.png",
+  status: "Completado",
   },
   {
     id: 2,
-    title: "Residencial Los Jardines",
+    title: "",
     category: "Residencial",
-    location: "Guadalajara",
-    year: "2023",
-    area: "120 unidades",
+    location: "",
+    year: "20",
+    area: "",
     description:
-      "Desarrollo habitacional con amenidades de primer nivel y diseño arquitectónico contemporáneo.",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
+      "",
+    image: "/images/imagencumicsa 2.png",
     status: "Completado",
   },
   {
     id: 3,
-    title: "Puente Viaducto Central",
+    title: "",
     category: "Infraestructura",
-    location: "Monterrey",
-    year: "2024",
-    area: "2.5 km",
+    location: "",
+    year: "20",
+    area: "",
     description:
-      "Infraestructura vial de alto impacto para mejorar la conectividad urbana.",
-    image: "https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&h=600&fit=crop",
-    status: "En progreso",
+      "",
+    image: "/images/imagencumicsa 3.png",
+    status: "Completado",
   },
   {
     id: 4,
-    title: "Hospital Regional del Sur",
+    title: "",
     category: "Institucional",
-    location: "Puebla",
-    year: "2022",
-    area: "25,000 m²",
+    location: "",
+    year: "20",
+    area: "",
     description:
-      "Centro de salud con tecnología de punta y capacidad para 500 camas.",
-    image: "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=800&h=600&fit=crop",
+      "",
+    image: "/images/imagencumicsa 4.png",
     status: "Completado",
   },
 ]
@@ -194,13 +194,6 @@ export function Projects() {
                     {project.area}
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  className="text-primary hover:text-primary/80 p-0 h-auto font-medium group/btn"
-                >
-                  Ver detalles
-                  <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover/btn:translate-x-1" />
-                </Button>
               </div>
             </motion.div>
           ))}
