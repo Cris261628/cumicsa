@@ -46,7 +46,7 @@ export function Hero() {
           >
             <div className="inline-flex p-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl">
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo%20-%20copia-b6zkgmEZuVa1sp0MQF2h4tTWE1uGh3.png"
+                src="/images/logo.png"
                 alt="CUMICSA Logo"
                 width={90}
                 height={90}

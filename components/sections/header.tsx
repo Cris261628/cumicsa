@@ -32,27 +32,25 @@ export function Header() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        ? "bg-background/95 backdrop-blur-md shadow-lg"
+        : "bg-transparent"
+        }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="#inicio" className="flex items-center gap-2">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo%20-%20copia-b6zkgmEZuVa1sp0MQF2h4tTWE1uGh3.png"
+              src="/images/logo.png"
               alt="CUMICSA Logo"
               width={50}
               height={50}
               className="object-contain"
             />
             <span
-              className={`text-xl font-bold transition-colors ${
-                isScrolled ? "text-foreground" : "text-white"
-              }`}
+              className={`text-xl font-bold transition-colors ${isScrolled ? "text-foreground" : "text-white"
+                }`}
             >
               CUMICSA
             </span>
@@ -64,9 +62,8 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isScrolled ? "text-foreground" : "text-white"
-                }`}
+                className={`text-sm font-medium transition-colors hover:text-primary ${isScrolled ? "text-foreground" : "text-white"
+                  }`}
               >
                 {item.name}
               </Link>

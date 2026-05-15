@@ -45,7 +45,7 @@ export function Footer() {
           >
             <div className="flex items-center gap-3 mb-6">
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo%20-%20copia-b6zkgmEZuVa1sp0MQF2h4tTWE1uGh3.png"
+                src="/images/logo.png"
                 alt="CUMICSA Logo"
                 width={50}
                 height={50}
