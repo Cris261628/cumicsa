@@ -109,9 +109,14 @@ export function Header() {
                   {item.name}
                 </Link>
               ))}
-              <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground w-full mt-2">
-                <Link href="#contacto">Contáctanos</Link>
-              </Button>
+              <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-14 px-8 rounded-2xl border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white hover:text-black text-lg transition-all"
+            >
+              <Link href="#contacto">Contáctanos</Link>
+            </Button>
             </nav>
           </motion.div>
         )}

@@ -8,49 +8,49 @@ import { useState } from "react"
 const projects = [
   {
   id: 1,
-  title: "Centro Comercial Plaza Norte",
+  title: "El Chimo comunidad del Tuito.",
   category: "Infraestructura",
-  location: "",
-  year: "20",
-  area: "",
+  location: "Tuito, Jalisco",
+  year: "2022",
+  area: "5.000",
   description:
-    "Complejo comercial de última generación con espacios verdes y tecnología sustentable.",
+    "excavacion de diviciones",
   image: "/images/imagencumicsa 1.png",
   status: "Completado",
   },
   {
     id: 2,
-    title: "",
-    category: "Residencial",
-    location: "",
-    year: "20",
-    area: "",
+    title: "Conservación general a la presa de Cointzio en Morelia, Michoacan.",
+    category: "infraestructura",
+    location: "presa de cointzio michoacan",
+    year: "2022",
+    area: "20.000",
     description:
-      "",
+      "instalacion de coladeras industriales",
     image: "/images/imagencumicsa 2.png",
     status: "Completado",
   },
   {
     id: 3,
-    title: "",
+    title: "Recubrimiento de concreto en canal de descarga Túnel Emisor",
     category: "Infraestructura",
-    location: "",
-    year: "20",
-    area: "",
+    location: "jalisco",
+    year: "2019",
+    area: "30.000",
     description:
-      "",
+      "recubrimiento de canal para aguas pluviales",
     image: "/images/imagencumicsa 3.png",
     status: "Completado",
   },
   {
     id: 4,
-    title: "",
-    category: "Institucional",
-    location: "",
-    year: "20",
-    area: "",
+    title: "construccion de compuertas desboque de canal",
+    category: "infraestructura",
+    location: "jalisco",
+    year: "2020",
+    area: "20",
     description:
-      "",
+      "construccion de compuertas para desviar agua",
     image: "/images/imagencumicsa 4.png",
     status: "Completado",
   },
@@ -109,7 +109,7 @@ export function Projects() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Nuestros <span className="text-primary">Proyectos</span>
+            Algunos de nuestros<span className="text-primary"> trabajos</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Cada proyecto es una obra de arte que refleja nuestro compromiso con
