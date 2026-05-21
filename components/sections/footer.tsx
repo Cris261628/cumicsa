@@ -26,10 +26,8 @@ const footerLinks = {
 }
 
 const socialLinks = [
-  { name: "Facebook", icon: Facebook, href: "#" },
-  { name: "Instagram", icon: Instagram, href: "#" },
-  { name: "LinkedIn", icon: Linkedin, href: "#" },
-  { name: "Twitter", icon: Twitter, href: "#" },
+  { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/cumicsa/?locale=es_LA" },
+  { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/cumicsa.morelia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
 ]
 
 export function Footer() {
@@ -148,10 +146,10 @@ export function Footer() {
             © {new Date().getFullYear()} CUMICSA. Todos los derechos reservados.
           </p>
           <div className="flex gap-6 text-sm text-white/50">
-            <Link href="#" className="hover:text-primary transition-colors">
+            <Link href="/privacidad" className="hover:text-primary transition-colors">
               Política de Privacidad
             </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
+            <Link href="/terminos" className="hover:text-primary transition-colors">
               Términos y Condiciones
             </Link>
           </div>

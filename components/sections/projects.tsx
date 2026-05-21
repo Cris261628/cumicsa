@@ -1,22 +1,19 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, MapPin, Calendar, Building } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { MapPin, Calendar, Building } from "lucide-react"
 
 const projects = [
   {
-  id: 1,
-  title: "El Chimo comunidad del Tuito.",
-  category: "Infraestructura",
-  location: "Tuito, Jalisco",
-  year: "2022",
-  area: "5.000",
-  description:
-    "excavacion de diviciones",
-  image: "/images/imagencumicsa 1.png",
-  status: "Completado",
+    id: 1,
+    title: "El Chimo comunidad del Tuito.",
+    category: "Infraestructura",
+    location: "Tuito, Jalisco",
+    year: "2022",
+    area: "5.000",
+    description: "excavacion de diviciones",
+    image: "/images/imagencumicsa 1.png",
+    status: "Completado",
   },
   {
     id: 2,
@@ -25,8 +22,7 @@ const projects = [
     location: "presa de cointzio michoacan",
     year: "2022",
     area: "20.000",
-    description:
-      "instalacion de coladeras industriales",
+    description: "instalacion de coladeras industriales",
     image: "/images/imagencumicsa 2.png",
     status: "Completado",
   },
@@ -37,8 +33,7 @@ const projects = [
     location: "jalisco",
     year: "2019",
     area: "30.000",
-    description:
-      "recubrimiento de canal para aguas pluviales",
+    description: "recubrimiento de canal para aguas pluviales",
     image: "/images/imagencumicsa 3.png",
     status: "Completado",
   },
@@ -49,23 +44,13 @@ const projects = [
     location: "jalisco",
     year: "2020",
     area: "20",
-    description:
-      "construccion de compuertas para desviar agua",
+    description: "construccion de compuertas para desviar agua",
     image: "/images/imagencumicsa 4.png",
     status: "Completado",
   },
 ]
 
-const categories = ["Todos", "Comercial", "Residencial", "Infraestructura", "Institucional"]
-
 export function Projects() {
-  const [activeCategory, setActiveCategory] = useState("Todos")
-
-  const filteredProjects =
-    activeCategory === "Todos"
-      ? projects
-      : projects.filter((p) => p.category === activeCategory)
-
   return (
     <section id="proyectos" className="py-24 bg-background relative overflow-hidden">
       {/* Animated Background Element */}
@@ -117,32 +102,9 @@ export function Projects() {
           </p>
         </motion.div>
 
-        {/* Category Filter */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
-        >
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={activeCategory === category ? "default" : "outline"}
-              onClick={() => setActiveCategory(category)}
-              className={
-                activeCategory === category
-                  ? "bg-primary text-primary-foreground"
-                  : "border-border text-foreground hover:bg-primary hover:text-primary-foreground"
-              }
-            >
-              {category}
-            </Button>
-          ))}
-        </motion.div>
-
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 gap-8">
-          {filteredProjects.map((project, index) => (
+          {projects.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 30 }}
@@ -162,11 +124,10 @@ export function Projects() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute top-4 left-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      project.status === "Completado"
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${project.status === "Completado"
                         ? "bg-green-500 text-white"
                         : "bg-primary text-primary-foreground"
-                    }`}
+                      }`}
                   >
                     {project.status}
                   </span>

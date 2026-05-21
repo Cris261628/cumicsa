@@ -2,6 +2,7 @@ import { Header } from "@/components/sections/header"
 import { Hero } from "@/components/sections/hero"
 import { VisionMission } from "@/components/sections/vision-mission"
 import { Projects } from "@/components/sections/projects"
+import { SobreNosotros } from "@/components/sections/sobrenosotros"
 import { Regulations } from "@/components/sections/regulations"
 import { Services } from "@/components/sections/services"
 import { Contact } from "@/components/sections/contact"
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <VisionMission />
       <Projects />
+      <SobreNosotros />
       <Regulations />
       <Services />
       <Contact />

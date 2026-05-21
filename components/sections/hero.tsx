@@ -4,13 +4,12 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ChevronDown, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 
 export function Hero() {
   return (
     <section
       id="inicio"
-      className="relative min-h-screen flex items-center overflow-hidden bg-[#0B1220]"
+      className="relative min-h-screen flex items-center overflow-hidden bg-[#0B1220] pt-28 pb-20 md:pt-24 md:pb-16"
     >
       {/* Background Glow */}
       <div className="absolute inset-0">
@@ -37,24 +36,6 @@ export function Hero() {
       {/* Main Content */}
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-3xl">
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="mb-8"
-          >
-            <div className="inline-flex p-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl">
-              <Image
-                src="/images/logo.png"
-                alt="CUMICSA Logo"
-                width={90}
-                height={90}
-                className="object-contain"
-              />
-            </div>
-          </motion.div>
-
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 35 }}
@@ -71,7 +52,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 35 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-5xl md:text-7xl font-black leading-tight text-white mb-6"
+            className="text-4xl sm:text-5xl md:text-7xl font-black leading-tight text-white mb-6"
           >
             Construyendo el{" "}
             <span className="text-primary relative">
@@ -131,7 +112,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 35 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="flex flex-wrap gap-10 mt-16"
+            className="flex flex-wrap gap-6 md:gap-10 mt-12 md:mt-16"
           >
             {[
               { number: "20+", label: "Años de experiencia" },
