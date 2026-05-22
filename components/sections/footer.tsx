@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
+import { Facebook, Instagram } from "lucide-react"
 
 const footerLinks = {
   empresa: [
@@ -32,25 +32,38 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-secondary text-white">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="bg-[#080e1a] relative overflow-hidden">
+
+      {/* Glow top */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-primary/10 blur-3xl rounded-full pointer-events-none" />
+
+      {/* Grid */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)`,
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      {/* Separador superior con gradiente */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+
+      <div className="container mx-auto px-4 py-16 relative z-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <Image
-                src="/images/logo.png"
-                alt="CUMICSA Logo"
-                width={50}
-                height={50}
-              />
-              <span className="text-xl font-bold">CUMICSA</span>
+              <Image src="/images/logo.png" alt="CUMICSA Logo" width={50} height={50} />
+              <span className="text-xl font-bold text-white">CUMICSA</span>
             </div>
-            <p className="text-white/70 mb-6">
+            <p className="text-white/50 text-sm leading-relaxed mb-6">
               Más de 20 años construyendo el futuro con excelencia, innovación y
               compromiso con nuestros clientes.
             </p>
@@ -59,30 +72,29 @@ export function Footer() {
                 <Link
                   key={social.name}
                   href={social.href}
-                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
+                  className="w-10 h-10 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center text-white/60 hover:text-white hover:border-primary/40 hover:bg-primary/10 transition-all"
                   aria-label={social.name}
                 >
-                  <social.icon className="w-5 h-5" />
+                  <social.icon className="w-4 h-4" />
                 </Link>
               ))}
             </div>
           </motion.div>
 
-          {/* Empresa Links */}
+          {/* Empresa */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h4 className="text-lg font-bold mb-6">Empresa</h4>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-6">
+              Empresa
+            </h4>
             <ul className="space-y-3">
               {footerLinks.empresa.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-primary transition-colors"
-                  >
+                  <Link href={link.href} className="text-white/50 text-sm hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -90,21 +102,20 @@ export function Footer() {
             </ul>
           </motion.div>
 
-          {/* Services Links */}
+          {/* Servicios */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h4 className="text-lg font-bold mb-6">Servicios</h4>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-6">
+              Servicios
+            </h4>
             <ul className="space-y-3">
               {footerLinks.servicios.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-primary transition-colors"
-                  >
+                  <Link href={link.href} className="text-white/50 text-sm hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
@@ -112,27 +123,27 @@ export function Footer() {
             </ul>
           </motion.div>
 
-          {/* Contact Links */}
+          {/* Contacto */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h4 className="text-lg font-bold mb-6">Contacto</h4>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-6">
+              Contacto
+            </h4>
             <ul className="space-y-3">
               {footerLinks.contacto.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 hover:text-primary transition-colors"
-                  >
+                  <Link href={link.href} className="text-white/50 text-sm hover:text-primary transition-colors">
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </motion.div>
+
         </div>
 
         {/* Bottom Bar */}
@@ -140,12 +151,13 @@ export function Footer() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
           className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4"
         >
-          <p className="text-white/50 text-sm">
+          <p className="text-white/30 text-sm">
             © {new Date().getFullYear()} CUMICSA. Todos los derechos reservados.
           </p>
-          <div className="flex gap-6 text-sm text-white/50">
+          <div className="flex gap-6 text-sm text-white/30">
             <Link href="/privacidad" className="hover:text-primary transition-colors">
               Política de Privacidad
             </Link>
@@ -154,6 +166,7 @@ export function Footer() {
             </Link>
           </div>
         </motion.div>
+
       </div>
     </footer>
   )

@@ -11,7 +11,6 @@ const navItems = [
   { name: "Inicio", href: "#inicio" },
   { name: "Visión y Misión", href: "#vision-mision" },
   { name: "Proyectos", href: "#proyectos" },
-  { name: "Normativas", href: "#normativas" },
   { name: "Servicios", href: "#servicios" },
   { name: "Contacto", href: "#contacto" },
 ]
@@ -19,12 +18,31 @@ const navItems = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState("inicio")
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
+
+      // Detectar sección activa
+      const sections = navItems.map((item) => item.href.replace("#", ""))
+
+      for (const section of [...sections].reverse()) {
+        const el = document.getElementById(section)
+
+        if (el) {
+          const rect = el.getBoundingClientRect()
+
+          if (rect.top <= 120) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
     }
-    window.addEventListener("scroll", handleScroll)
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -32,13 +50,15 @@ export function Header() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-        ? "bg-background/95 backdrop-blur-md shadow-lg"
-        : "bg-transparent"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-[#0B1220]/95 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.4)] border-b border-white/5"
+          : "bg-transparent"
+      }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
+
           {/* Logo */}
           <Link href="#inicio" className="flex items-center gap-2">
             <Image
@@ -48,32 +68,73 @@ export function Header() {
               height={50}
               className="object-contain"
             />
-            <span
-              className={`text-xl font-bold transition-colors ${isScrolled ? "text-foreground" : "text-white"
-                }`}
-            >
+
+            <span className="text-xl font-bold text-white">
               CUMICSA
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${isScrolled ? "text-foreground" : "text-white"
-                  }`}
-              >
-                {item.name}
-              </Link>
-            ))}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => {
+              const sectionId = item.href.replace("#", "")
+              const isActive = activeSection === sectionId
+
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="relative px-4 py-2 text-sm font-medium transition-colors rounded-lg group"
+                >
+                  {/* Glow suave */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeGlow"
+                      className="absolute inset-0 rounded-lg"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+
+                  <span
+                    className={`relative z-10 transition-all duration-300 ${
+                      isActive
+                        ? "text-primary drop-shadow-[0_0_10px_rgba(245,158,11,0.9)]"
+                        : "text-white/60 group-hover:text-white"
+                    }`}
+                  >
+                    {item.name}
+                  </span>
+
+                  {/* Punto indicador */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeDot"
+                      className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary shadow-[0_0_10px_rgba(245,158,11,1)]"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </Link>
+              )
+            })}
           </nav>
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Link href="#contacto">Contáctanos</Link>
+            <Button
+              asChild
+              className="h-10 px-6 rounded-xl bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all text-sm"
+            >
+              <Link href="#contacto">
+                Contáctanos
+              </Link>
             </Button>
           </div>
 
@@ -81,7 +142,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className={`lg:hidden ${isScrolled ? "text-foreground" : "text-white"}`}
+            className="lg:hidden text-white hover:bg-white/10"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -96,27 +157,54 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-background border-t"
+            className="lg:hidden bg-[#0B1220]/98 backdrop-blur-md border-t border-white/10"
           >
-            <nav className="container mx-auto px-4 py-4 flex flex-col gap-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-foreground hover:text-primary transition-colors py-2"
+            <nav className="container mx-auto px-4 py-4 flex flex-col gap-1">
+              {navItems.map((item) => {
+                const sectionId = item.href.replace("#", "")
+                const isActive = activeSection === sectionId
+
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                      isActive
+                        ? "text-primary"
+                        : "text-white/60 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {isActive && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 shadow-[0_0_10px_rgba(245,158,11,1)]" />
+                    )}
+
+                    <span
+                      className={
+                        isActive
+                          ? "drop-shadow-[0_0_8px_rgba(245,158,11,0.9)]"
+                          : ""
+                      }
+                    >
+                      {item.name}
+                    </span>
+                  </Link>
+                )
+              })}
+
+              <div className="pt-2">
+                <Button
+                  asChild
+                  className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all"
                 >
-                  {item.name}
-                </Link>
-              ))}
-              <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="h-14 px-8 rounded-2xl border-white/20 bg-white/5 backdrop-blur-md text-white hover:bg-white hover:text-black text-lg transition-all"
-            >
-              <Link href="#contacto">Contáctanos</Link>
-            </Button>
+                  <Link
+                    href="#contacto"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Contáctanos
+                  </Link>
+                </Button>
+              </div>
             </nav>
           </motion.div>
         )}
