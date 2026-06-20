@@ -133,7 +133,7 @@ export function Services() {
 
               <div>
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                  Más de 20 años construyendo{" "}
+                  Más de 35 años construyendo{" "}
                   <span className="text-primary">confianza</span>
                 </h3>
                 <p className="text-white/60 mb-8 leading-relaxed">

@@ -144,8 +144,8 @@ export function SobreNosotros() {
           {/* Estadísticas */}
           <div className="grid grid-cols-2 gap-6 order-2 lg:order-1">
             {[
-              { number: "+20", label: "Proyectos" },
-              { number: "+10", label: "Años de experiencia" },
+              { number: "+64", label: "Proyectos" },
+              { number: "+35", label: "Años de experiencia" },
               { number: "100%", label: "Clientes satisfechos" },
               { number: "+50", label: "Trabajadores" },
             ].map((item, index) => (

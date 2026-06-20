@@ -547,10 +547,6 @@ export function Projects() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/10 backdrop-blur-md text-primary text-sm font-medium mb-6">
-            <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-            Portafolio de obra
-          </div>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
             Algunos de nuestros{" "}
             <span className="text-primary relative inline-block">
@@ -565,7 +561,7 @@ export function Projects() {
             </span>
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto text-lg">
-            Más de 20 años ejecutando proyectos de infraestructura, obra civil e hidráulica en todo México.
+            Más de 35 años ejecutando proyectos de infraestructura, obra civil e hidráulica en todo México.
           </p>
         </motion.div>
 
