@@ -1,93 +1,525 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
-import { MapPin, Calendar, Building2, ChevronLeft, ChevronRight } from "lucide-react"
-import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import { useState, useEffect, useRef, useCallback } from "react"
+
+// ─── Datos de proyectos ───────────────────────────────────────────────────────
+// INSTRUCCIONES: Reemplaza cada "imgUrl" con la URL de Cloudflare de tu imagen.
+// Ejemplo: "https://imagedelivery.net/TU_ACCOUNT_HASH/nombre-imagen/public"
+// Los títulos y años vienen del curriculum oficial de CUMICSA.
 
 const projects = [
   {
     id: 1,
-    title: "El Chimo comunidad del Tuito.",
-    category: "Infraestructura",
-    location: "Tuito, Jalisco",
-    year: "2022",
-    area: "5.000",
-    description: "Excavación de divisiones en zona de desarrollo comunitario.",
-    image: "/images/imagencumicsa 1.png",
-    status: "Completado",
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964381/Recubrimientohidrulico_1_v5w1se.png",   // ← Imagen 1
+    title: "Recubrimiento de concreto hidráulico en canal de descarga, Túnel Emisor Poniente, Cuautitlán Izcalli, ",
+    year: "2018",
   },
   {
     id: 2,
-    title: "Conservación general a la presa de Cointzio en Morelia, Michoacán.",
-    category: "Infraestructura",
-    location: "Presa de Cointzio, Michoacán",
-    year: "2022",
-    area: "20.000",
-    description: "Instalación de coladeras industriales de alto rendimiento.",
-    image: "/images/imagencumicsa 2.png",
-    status: "Completado",
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964382/Recubrimientohidrulico_2_ibgda3.png",   // ← Imagen 2
+    title: "Recubrimiento de concreto hidráulico en canal de descarga, Túnel Emisor Poniente, Cuautitlán Izcalli,",
+    year: "2018",
   },
   {
     id: 3,
-    title: "Recubrimiento de concreto en canal de descarga Túnel Emisor.",
-    category: "Infraestructura",
-    location: "Jalisco",
-    year: "2019",
-    area: "30.000",
-    description: "Recubrimiento de canal para conducción de aguas pluviales.",
-    image: "/images/imagencumicsa 3.png",
-    status: "Completado",
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964383/Recubrimientohidrulico_3_cwh4c7.png",   // ← Imagen 3
+    title: "Recubrimiento de concreto hidráulico en canal de descarga, Túnel Emisor Poniente, Cuautitlán Izcalli",
+    year: "2018",
   },
   {
     id: 4,
-    title: "Construcción de compuertas de desboque de canal.",
-    category: "Infraestructura",
-    location: "Jalisco",
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964383/Recubrimientohidrulico_4_ze4fwi.png",   // ← Imagen 4
+    title: "Recubrimiento de concreto hidráulico en canal de descarga, Túnel Emisor Poniente, Cuautitlán Izcalli",
+    year: "2018",
+  },
+  {
+    id: 5,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964384/Recubrimientohidrulico_5_iuahnn.png",   // ← Imagen 5
+    title: "Recubrimiento de concreto hidráulico en canal de descarga, Túnel Emisor Poniente, Cuautitlán Izcalli",
+    year: "2018",
+  },
+  {
+    id: 6,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964380/L%C3%ADnea_de_conducci%C3%B3n_1_beb8em.png",   // ← Imagen 6
+    title: "Línea de conducción, Av. Villas del Pedregal, OOAPAS Morelia",
+    year: "2022",
+  },
+  {
+    id: 7,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964381/L%C3%ADnea_de_conducci%C3%B3n_2_abzxwj.png",   // ← Imagen 7
+    title: "Línea de conducción, Av. Villas del Pedregal, OOAPAS Morelia",
+    year: "2022",
+  },
+  {
+    id: 8,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964380/Limpieza_Dren_2_j0vble.png",   // ← Imagen 8
+    title: "Limpieza Dren Eréndira, Morelia",
+    year: "2006",
+  },
+  {
+    id: 9,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964379/Limpieza_Dren_1_x2axe2.png",   // ← Imagen 9
+    title: "Limpieza Dren La Soledad, Morelia",
+    year: "2006",
+  },
+  {
+    id: 10,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964372/desboque_1_kwgfz5.png",   // ← Imagen 10
+    title: "Conservación obra civil y compuertas, Distrito de Riego 087",
     year: "2020",
-    area: "20",
-    description: "Construcción de compuertas hidráulicas para desvío de agua.",
-    image: "/images/imagencumicsa 4.png",
-    status: "Completado",
+  },
+  {
+    id: 11,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964373/desboque_2_ssmmaa.png",   // ← Imagen 11
+    title: "Conservación obra civil y compuertas, Distrito de Riego 087",
+    year: "2020",
+  },
+  {
+    id: 12,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964373/desboque_3_jslu1c.png",   // ← Imagen 12
+    title: "Conservación obra civil y compuertas, Distrito de Riego 087",
+    year: "2020",
+  },
+  {
+    id: 13,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964373/Conservaci%C3%B3n_general_1_a4ozyv.png",   // ← Imagen 13
+    title: "Conservación general a la Presa de Cointzio, Morelia, Michoacán",
+    year: "2022",
+  },
+  {
+    id: 14,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964366/compuertaradial_1_fxccve.png",   // ← Imagen 14
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 15,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964365/compuertaradial_2_bz7cux.png",   // ← Imagen 15
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 16,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964366/compuertaradial_3_lfdtts.png",   // ← Imagen 16
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 17,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964366/compuertaradial_4_o7n6yu.png",   // ← Imagen 17
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 18,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964367/compuertaradial_5_bma950.png",   // ← Imagen 18
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 19,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964368/compuertaradial_6_d5kqsw.png",   // ← Imagen 19
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 20,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964368/compuertaradial_7_gpwar4.png",   // ← Imagen 20
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 21,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964369/compuertaradial_8_mdnj39.png",   // ← Imagen 21
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 22,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964369/compuertaradial_9_uysyh9.png",   // ← Imagen 22
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 23,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964370/compuertaradial_10_lm5yob.png",   // ← Imagen 23
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 24,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964371/compuertaradial_11_ml9ho2.png",   // ← Imagen 24
+    title: "Rehabilitación de mecanismos de izaje de compuertas radiales, Presa Cajón de Peña, Tomatlán, Jalisco",
+    year: "2021",
+  },
+  {
+    id: 25,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964364/carpeta_asfaltica_1_s39wxn.png",   // ← Imagen 25
+    title: "Camino La Herradura, José Sixto Verduzco",
+    year: "2002",
+  },
+  {
+    id: 26,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964365/carpeta_asfaltica_2_tktdvg.png",   // ← Imagen 25
+    title: "Camino La Herradura, José Sixto Verduzco",
+    year: "2002",
+  },
+  {
+    id: 27,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964365/carpeta_asfaltica_3_ln8sxc.png",   // ← Imagen 25
+    title: "Camino La Herradura, José Sixto Verduzco",
+    year: "2002",
+  },
+  {
+    id: 28,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964374/img_normal_vxuqjv.png",
+    title: "CUMICSA construyendo el futuro",
+    year: "",
+  },
+  {
+    id: 29,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/imgnormal_2_vgixq6.png",
+    title: "CUMICSA construyendo el futuro",
+    year: "",
+  },
+  {
+    id: 30,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/imgnormal_3_uqubcs.png",
+    title: "CUMICSA construyendo el futuro",
+    year: "",
+  },
+  {
+    id: 31,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/imgnormal_4_vporm3.png",
+    title: "CUMICSA construyendo el futuro",
+    year: "",
+  },
+  {
+    id: 32,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/imgnormal_5_rq6yol.png",
+    title: "CUMICSA construyendo el futuro",
+    year: "",
+  },
+  {
+    id: 33,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/imgnormal_6_lp4t9w.png",
+    title: "CUMICSA construyendo el futuro",
+    year: "",
+  },
+  {
+    id: 34,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/imgnormal_7_vlvjgf.png",
+    title: "CUMICSA construyendo el futuro",
+    year: "",
+  },
+  {
+    id: 35,
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1781964378/imgnormal_sguhve.png",
+    title: "CUMICSA construyendo el futuro",
+    year: "",
   },
 ]
 
-export function Projects() {
-  const [current, setCurrent] = useState(0)
-  const [direction, setDirection] = useState(1)
-  const [paused, setPaused] = useState(false)
+
+// ─── Card Fan Carousel ────────────────────────────────────────────────────────
+const MAX_VISIBLE = 9
+const HALF = Math.floor(MAX_VISIBLE / 2)
+
+const FAN_POSITIONS = [
+  { rot: -32, scale: 0.62, x: -28, y: 14.0, zIndex: 1 },
+  { rot: -23, scale: 0.72, x: -21, y: 9.0, zIndex: 2 },
+  { rot: -15, scale: 0.81, x: -14, y: 5.5, zIndex: 3 },
+  { rot: -7, scale: 0.91, x: -7, y: 2.0, zIndex: 4 },
+  { rot: 0, scale: 1.00, x: 0, y: 0.0, zIndex: 10 },
+  { rot: 7, scale: 0.91, x: 7, y: 2.0, zIndex: 4 },
+  { rot: 15, scale: 0.81, x: 14, y: 5.5, zIndex: 3 },
+  { rot: 23, scale: 0.72, x: 21, y: 9.0, zIndex: 2 },
+  { rot: 32, scale: 0.62, x: 28, y: 14.0, zIndex: 1 },
+]
+
+function getResponsiveMultiplier(width: number) {
+  if (width < 480) return 0.28
+  if (width < 640) return 0.40
+  if (width < 768) return 0.54
+  if (width < 1024) return 0.76
+  return 1.0
+}
+
+function getHeightMultiplier() {
+  const idealPx = 520
+  const available = window.innerHeight * 0.7
+  if (available >= idealPx) return 1
+  return available / idealPx
+}
+
+function getSlotConfig(slot: number) {
+  return FAN_POSITIONS[slot] ?? FAN_POSITIONS[HALF]
+}
+
+const ARROW_CLASSES =
+  "relative flex items-center justify-center rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white/50 cursor-pointer shrink-0 z-30 outline-none hover:border-primary/50 hover:text-primary active:opacity-70 transition-colors duration-300 w-10 h-10 md:w-12 md:h-12"
+
+interface CardData {
+  imgUrl: string
+  title: string
+  year: string
+}
+
+interface FanCarouselProps {
+  cards: CardData[]
+}
+
+function FanCarousel({ cards }: FanCarouselProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isAnimating = useRef(false)
+  const hasEntered = useRef(false)
+  const directionRef = useRef<"left" | "right" | null>(null)
+  const prevVisible = useRef<Set<number>>(new Set())
+  const [activeCard, setActiveCard] = useState<number | null>(null)
+
+  const totalCards = cards.length
+  const [centerIndex, setCenterIndex] = useState(HALF)
+
+  const getVisibleMap = useCallback((center: number) => {
+    const map = new Map<number, number>()
+    for (let slot = 0; slot < MAX_VISIBLE; slot++) {
+      map.set(((center + slot - HALF) % totalCards + totalCards) % totalCards, slot)
+    }
+    return map
+  }, [totalCards])
+
+  const cycle = useCallback((direction: "left" | "right") => {
+    if (isAnimating.current) return
+    isAnimating.current = true
+    directionRef.current = direction
+    setActiveCard(null)
+    setCenterIndex(prev =>
+      direction === "right" ? (prev + 1) % totalCards : (prev - 1 + totalCards) % totalCards
+    )
+  }, [totalCards])
 
   useEffect(() => {
-    if (paused) return
-    const timer = setInterval(() => {
-      setDirection(1)
-      setCurrent((prev) => (prev + 1) % projects.length)
-    }, 4000)
-    return () => clearInterval(timer)
-  }, [paused])
+    const run = async () => {
+      const gsapMod = await import("gsap")
+      const gsap = gsapMod.default
 
-  const goTo = (index: number) => {
-    setDirection(index > current ? 1 : -1)
-    setCurrent(index)
-    setPaused(true)
-    setTimeout(() => setPaused(false), 6000)
-  }
+      const container = containerRef.current
+      if (!container || !totalCards) return
 
-  const prev = () => {
-    setDirection(-1)
-    setCurrent((prev) => (prev - 1 + projects.length) % projects.length)
-    setPaused(true)
-    setTimeout(() => setPaused(false), 6000)
-  }
+      const cardEls = Array.from(container.querySelectorAll<HTMLElement>(".fan-card"))
+      if (!cardEls.length) return
 
-  const next = () => {
-    setDirection(1)
-    setCurrent((prev) => (prev + 1) % projects.length)
-    setPaused(true)
-    setTimeout(() => setPaused(false), 6000)
-  }
+      const visibleMap = getVisibleMap(centerIndex)
+      const prevVis = prevVisible.current
+      const direction = directionRef.current
+      const isFirst = !hasEntered.current
+      const mult = getResponsiveMultiplier(window.innerWidth)
+      const hMult = getHeightMultiplier()
 
-  const project = projects[current]
+      if (isFirst) isAnimating.current = true
 
+      let done = 0
+      const total = visibleMap.size
+      const onDone = () => { if (++done >= total) { isAnimating.current = false; if (isFirst) hasEntered.current = true } }
+
+      cardEls.forEach((card, idx) => {
+        const slot = visibleMap.get(idx)
+        const wasVis = prevVis.has(idx)
+
+        if (slot !== undefined) {
+          const { x, y, rot, scale, zIndex } = getSlotConfig(slot)
+          const target = { x: `${x * mult}rem`, y: `${y * hMult}rem`, rotation: rot, scale, opacity: 1, zIndex }
+
+          if (isFirst) {
+            gsap.set(card, { x: 0, y: `${10 * hMult}rem`, rotation: 0, scale: 0.5, opacity: 0 })
+            gsap.to(card, { ...target, duration: 1.1, ease: "elastic.out(1.05,.78)", delay: 0.12 + slot * 0.07, onComplete: onDone })
+          } else if (!wasVis) {
+            const ex = direction === "right" ? 36 : -36
+            gsap.set(card, { x: `${ex}rem`, y: `${y * hMult}rem`, rotation: direction === "right" ? 28 : -28, scale: 0.5, opacity: 0 })
+            gsap.to(card, { ...target, duration: 0.55, ease: "power2.out", onComplete: onDone })
+          } else {
+            gsap.to(card, { ...target, duration: 0.48, ease: "power2.out", onComplete: onDone })
+          }
+        } else if (wasVis) {
+          const ex = direction === "right" ? -36 : 36
+          gsap.to(card, { x: `${ex}rem`, opacity: 0, scale: 0.5, rotation: direction === "right" ? -28 : 28, duration: 0.38, ease: "power2.in", zIndex: 0 })
+        } else if (isFirst) {
+          gsap.set(card, { opacity: 0, scale: 0.3, x: 0, y: 0, zIndex: 0 })
+        }
+      })
+
+      prevVisible.current = new Set(visibleMap.keys())
+
+      // ── Hover ──────────────────────────────────────────────────────────────
+      const visEntries: { el: HTMLElement; slot: number }[] = []
+      cardEls.forEach((el, i) => { const s = visibleMap.get(i); if (s !== undefined) visEntries.push({ el, slot: s }) })
+      visEntries.sort((a, b) => a.slot - b.slot)
+
+      let activeSlot: number | null = null
+      let leaveTimer: NodeJS.Timeout | null = null
+      const centerSlot = HALF
+
+      const updateHover = (hovSlot: number | null) => {
+        const m = getResponsiveMultiplier(window.innerWidth)
+        const hM = getHeightMultiplier()
+        visEntries.forEach(({ el, slot }) => {
+          const base = getSlotConfig(slot)
+          let tx = base.x * m, ty = base.y * hM, tr = base.rot, ts = base.scale, delay = 0
+          if (hovSlot !== null) {
+            const dist = Math.abs(slot - hovSlot)
+            delay = dist * 0.02
+            if (slot === hovSlot) {
+              ty -= 2.5 * hM; ts *= 1.10
+            } else {
+              const norm = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0
+              const push = 8 * (1 - Math.abs(norm)) * (1 + 0.2 * Math.max(0, 3 - dist))
+              if (slot < hovSlot) { tx -= push * m; tr -= 3 / (dist + 1) }
+              else { tx += push * m; tr += 3 / (dist + 1) }
+            }
+          } else {
+            delay = Math.abs(slot - centerSlot) * 0.02
+          }
+          gsap.to(el, { x: `${tx}rem`, y: `${ty}rem`, rotation: tr, scale: ts, duration: 0.48, delay, ease: "elastic.out(1,.75)", overwrite: "auto" })
+          gsap.set(el, { zIndex: base.zIndex })
+        })
+      }
+
+      const handlers = visEntries.map(({ el, slot }) => {
+        const fn = () => {
+          if (isAnimating.current) return
+          if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null }
+          if (activeSlot !== slot) { activeSlot = slot; updateHover(slot) }
+          const ci = [...visibleMap.entries()].find(([, s]) => s === slot)?.[0]
+          if (ci !== undefined) setActiveCard(ci)
+        }
+        el.addEventListener("mouseenter", fn)
+        return { el, fn }
+      })
+
+      const onLeave = () => {
+        if (isAnimating.current) return
+        if (leaveTimer) clearTimeout(leaveTimer)
+        leaveTimer = setTimeout(() => { activeSlot = null; updateHover(null); setActiveCard(null) }, 60)
+      }
+      container.addEventListener("mouseleave", onLeave)
+
+      const onResize = () => { if (!isAnimating.current) updateHover(activeSlot) }
+      window.addEventListener("resize", onResize)
+
+      return () => {
+        handlers.forEach(({ el, fn }) => el.removeEventListener("mouseenter", fn))
+        container.removeEventListener("mouseleave", onLeave)
+        window.removeEventListener("resize", onResize)
+        if (leaveTimer) clearTimeout(leaveTimer)
+      }
+    }
+
+    const cleanup = run()
+    return () => { cleanup.then(fn => fn?.()) }
+  }, [centerIndex, totalCards, getVisibleMap])
+
+  const chevron = (dir: "left" | "right") => (
+    <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points={dir === "left" ? "15 18 9 12 15 6" : "9 18 15 12 9 6"} />
+    </svg>
+  )
+
+  if (!totalCards) return null
+
+  const info = activeCard !== null ? cards[activeCard] : null
+
+  return (
+    <div className="flex flex-col items-center w-full">
+
+      {/* Abanico */}
+      <div className="flex items-center justify-center w-full">
+        <div
+          ref={containerRef}
+          className="relative flex justify-center items-end w-full"
+          style={{ height: "clamp(260px, 44vw, 540px)" }}
+        >
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              className="fan-card absolute cursor-pointer"
+              style={{
+                width: "clamp(110px, 14vw, 185px)",
+                height: "clamp(170px, 24vw, 320px)",
+                borderRadius: "1rem",
+                overflow: "hidden",
+                willChange: "transform",
+                boxShadow: "0 8px 40px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.4)",
+              }}
+            >
+              <img
+                src={card.imgUrl}
+                alt={card.title}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+              {/* Año en la esquina inferior */}
+              <div className="absolute bottom-3 left-3">
+                <span className="text-white/90 text-xs font-bold tracking-widest">
+                  {card.year}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Panel info al hacer hover */}
+      <div className="relative w-full max-w-lg mx-auto mt-6 h-20">
+        {info ? (
+          <motion.div
+            key={info.title}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.22 }}
+            className="absolute inset-0 flex flex-col justify-center items-center text-center px-6"
+          >
+            <span className="text-primary text-xs font-semibold uppercase tracking-widest mb-2">
+              {info.year}
+            </span>
+            <h3 className="text-white font-bold text-sm md:text-base leading-snug line-clamp-2">
+              {info.title}
+            </h3>
+          </motion.div>
+        ) : (
+          <p className="absolute inset-0 flex items-center justify-center text-white/25 text-sm italic">
+            Pasa el cursor sobre un proyecto para ver los detalles
+          </p>
+        )}
+      </div>
+
+      {/* Paginación */}
+      <div className="flex items-center justify-center gap-4 mt-3 z-30">
+        <button className={ARROW_CLASSES} onClick={() => cycle("left")} aria-label="Anterior">
+          {chevron("left")}
+        </button>
+        <div className="flex items-center gap-1.5">
+          {cards.map((_, i) => (
+            <span
+              key={i}
+              className={`rounded-full transition-all duration-300 ${i === centerIndex ? "bg-primary w-5 h-1.5" : "bg-white/20 w-1.5 h-1.5"
+                }`}
+            />
+          ))}
+        </div>
+        <button className={ARROW_CLASSES} onClick={() => cycle("right")} aria-label="Siguiente">
+          {chevron("right")}
+        </button>
+      </div>
+
+    </div>
+  )
+}
+
+// ─── Sección principal ────────────────────────────────────────────────────────
+export function Projects() {
   return (
     <section id="proyectos" className="py-24 bg-[#0B1220] relative overflow-hidden">
 
@@ -121,7 +553,7 @@ export function Projects() {
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
             Algunos de nuestros{" "}
-            <span className="text-primary relative">
+            <span className="text-primary relative inline-block">
               trabajos
               <motion.span
                 className="absolute left-0 bottom-1 w-full h-3 bg-primary/20 -z-10 rounded"
@@ -133,165 +565,13 @@ export function Projects() {
             </span>
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto text-lg">
-            Cada proyecto refleja nuestro compromiso con la excelencia y la innovación en infraestructura.
+            Más de 20 años ejecutando proyectos de infraestructura, obra civil e hidráulica en todo México.
           </p>
         </motion.div>
 
-        {/* Carrusel — flechas a los lados, dots debajo */}
-        <div className="max-w-4xl mx-auto">
+        {/* Fan carousel */}
+        <FanCarousel cards={projects} />
 
-          {/* Fila: flecha izq + card + flecha der */}
-          <div className="flex items-center gap-4">
-
-            {/* Flecha izquierda */}
-            <button
-              onClick={prev}
-              className="shrink-0 text-white/40 hover:text-primary transition-colors"
-            >
-              <ChevronLeft className="w-8 h-8" />
-            </button>
-
-            {/* Card */}
-            <div className="flex-1 relative overflow-hidden rounded-2xl">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={current}
-                  custom={direction}
-                  initial={{ opacity: 0, scale: 0.96, y: direction > 0 ? 30 : -30 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 1.02, y: direction > 0 ? -30 : 30 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div className="grid md:grid-cols-2 rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md">
-
-                    {/* Imagen */}
-                    <div className="relative h-64 md:h-auto min-h-[280px] overflow-hidden">
-                      <motion.img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                        initial={{ scale: 1.08 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 0.7, ease: "easeOut" }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0B1220]/60 hidden md:block" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/80 to-transparent md:hidden" />
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30 backdrop-blur-sm">
-                          {project.status}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Contenido */}
-                    <div className="p-8 flex flex-col justify-center">
-                      <motion.span
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.15, duration: 0.4 }}
-                        className="text-primary/80 text-xs font-medium uppercase tracking-widest mb-3 block"
-                      >
-                        {project.category}
-                      </motion.span>
-
-                      <motion.h3
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.4 }}
-                        className="text-xl md:text-2xl font-bold text-white mb-4 leading-snug"
-                      >
-                        {project.title}
-                      </motion.h3>
-
-                      <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.25, duration: 0.4 }}
-                        className="text-white/60 text-sm leading-relaxed mb-6"
-                      >
-                        {project.description}
-                      </motion.p>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.4 }}
-                        className="flex flex-wrap gap-3 text-xs text-white/50 mb-6"
-                      >
-                        <div className="flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-primary/70" />
-                          {project.location}
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-primary/70" />
-                          {project.year}
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <Building2 className="w-3.5 h-3.5 text-primary/70" />
-                          {project.area} m²
-                        </div>
-                      </motion.div>
-
-                      <motion.div
-                        className="h-px bg-gradient-to-r from-primary/60 via-primary/20 to-transparent"
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        style={{ originX: 0 }}
-                        transition={{ delay: 0.35, duration: 0.7 }}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Barra de progreso — pegada a la card sin espacio */}
-              <div className="h-px bg-white/5">
-                {!paused && (
-                  <motion.div
-                    key={current}
-                    className="h-full bg-primary/50"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 4, ease: "linear" }}
-                    style={{ originX: 0 }}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Flecha derecha */}
-            <button
-              onClick={next}
-              className="shrink-0 text-white/40 hover:text-primary transition-colors"
-            >
-              <ChevronRight className="w-8 h-8" />
-            </button>
-
-          </div>
-
-          {/* Dots — centrados debajo de la card */}
-          <div className="flex items-center justify-center gap-2 mt-5">
-            {projects.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className="relative h-1.5 rounded-full overflow-hidden transition-all duration-300"
-                style={{
-                  width: i === current ? 32 : 12,
-                  background: i === current ? "transparent" : "rgba(255,255,255,0.2)",
-                }}
-              >
-                {i === current && (
-                  <motion.div
-                    className="absolute inset-0 bg-primary rounded-full"
-                    layoutId="activeDot"
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-
-        </div>
       </div>
     </section>
   )

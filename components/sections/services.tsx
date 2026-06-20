@@ -10,10 +10,10 @@ import { RevealLift, ConstructionProgress } from "@/components/construction-scen
 
 const services = [
   {
-    icon: Building2,
-    title: "Construcción Civil",
-    description: "Edificaciones residenciales, comerciales e industriales con los más altos estándares de calidad.",
-    features: ["Obra nueva", "Remodelaciones", "Ampliaciones"],
+    icon: Wrench,
+    title: "Infraestructura",
+    description: "Desarrollo de obras de infraestructura urbana y vial de gran escala.",
+    features: ["Carreteras", "Puentes", "Sistemas hidráulicos"],
   },
   {
     icon: Ruler,
@@ -22,22 +22,22 @@ const services = [
     features: ["Arquitectura", "Ingeniería estructural", "Diseño de interiores"],
   },
   {
-    icon: HardHat,
-    title: "Supervisión de Obra",
-    description: "Control y seguimiento de proyectos para garantizar calidad, tiempo y presupuesto.",
-    features: ["Control de calidad", "Gestión de cronograma", "Reportes técnicos"],
-  },
-  {
-    icon: Wrench,
-    title: "Infraestructura",
-    description: "Desarrollo de obras de infraestructura urbana y vial de gran escala.",
-    features: ["Carreteras", "Puentes", "Sistemas hidráulicos"],
+    icon: Building2,
+    title: "Construcción Civil",
+    description: "Edificaciones residenciales, comerciales e industriales con los más altos estándares de calidad.",
+    features: ["Obra nueva", "Remodelaciones", "Ampliaciones"],
   },
   {
     icon: Hammer,
     title: "Mantenimiento",
     description: "Servicios de mantenimiento preventivo y correctivo para edificaciones.",
     features: ["Mantenimiento preventivo", "Reparaciones", "Rehabilitación"],
+  },
+  {
+    icon: HardHat,
+    title: "Supervisión de Obra",
+    description: "Control y seguimiento de proyectos para garantizar calidad, tiempo y presupuesto.",
+    features: ["Control de calidad", "Gestión de cronograma", "Reportes técnicos"],
   },
   {
     icon: TrendingUp,
@@ -142,30 +142,20 @@ export function Services() {
                 </p>
 
                 <div className="space-y-4 mb-8">
-                  <ConstructionProgress label="Satisfacción del cliente" percent={98} delay={0.3} />
-                  <ConstructionProgress label="Proyectos en tiempo" percent={94} delay={0.5} />
+                  <ConstructionProgress label="Satisfacción del cliente" percent={100} delay={0.3} />
+                  <ConstructionProgress label="Proyectos en tiempo" percent={95} delay={0.5} />
                   <ConstructionProgress label="Cumplimiento normativo" percent={100} delay={0.7} />
                 </div>
 
-                <Button
-                  asChild
-                  size="lg"
-                  className="h-12 px-8 rounded-2xl bg-primary hover:bg-primary/90 shadow-[0_0_35px_rgba(245,158,11,0.3)] transition-all"
-                >
-                  <Link href="#contacto">
-                    Solicitar cotización
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
-                </Button>
               </div>
 
               {/* Stats grid */}
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { value: "500+", label: "Proyectos completados" },
-                  { value: "20+",  label: "Años de experiencia" },
-                  { value: "150+", label: "Profesionales" },
-                  { value: "98%",  label: "Clientes satisfechos" },
+                  { value: "64+", label: "Proyectos completados" },
+                  { value: "35+", label: "Años de experiencia" },
+                  { value: "20+", label: "Profesionales" },
+                  { value: "100%", label: "Clientes satisfechos" },
                 ].map((stat, index) => (
                   <motion.div
                     key={stat.label}

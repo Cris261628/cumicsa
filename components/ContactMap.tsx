@@ -15,7 +15,7 @@ const icon = L.icon({
 });
 
 export default function ContactMap() {
-    const position: [number, number] = [19.659546, -101.156379];
+    const position: [number, number] = [19.692456, -101.275491];
 
     return (
         <MapContainer

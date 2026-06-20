@@ -14,15 +14,15 @@ export function Hero() {
       {/* Background */}
       <div className="absolute inset-0">
 
-       <div
-  className="absolute inset-0 opacity-55 scale-100"
-  style={{
-    backgroundImage: "url('/images/fondo.jpg')",
-    backgroundSize: "115%",
-    backgroundPosition: "center center",
-    backgroundRepeat: "no-repeat",
-  }}
-/>
+        <div
+          className="absolute inset-0 opacity-55 scale-100"
+          style={{
+            backgroundImage: "url('/images/fondo.png')",
+            backgroundSize: "115%",
+            backgroundPosition: "center center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
         {/* Glow */}
         <div className="absolute top-[-200px] left-[-150px] w-[500px] h-[500px] bg-primary/20 blur-3xl rounded-full" />
 
@@ -88,8 +88,8 @@ export function Hero() {
             transition={{ delay: 0.4 }}
             className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl mb-10"
           >
-            Más de 20 años desarrollando proyectos de construcción,
-            infraestructura y urbanización con estándares de calidad,
+            Más de 35 años desarrollando proyectos de construcción,
+            infraestructura y mantenimiento industrial con estándares de calidad,
             seguridad y tecnología moderna.
           </motion.p>
 
@@ -133,8 +133,8 @@ export function Hero() {
           >
             {[
               { number: "35+", label: "Años de experiencia" },
-              { number: "150+", label: "Proyectos completados" },
-              { number: "98%", label: "Clientes satisfechos" },
+              { number: "64+", label: "Proyectos completados" },
+              { number: "100%", label: "Clientes satisfechos" },
             ].map((item, index) => (
               <div key={index}>
                 <h3 className="text-3xl md:text-4xl font-bold text-primary">

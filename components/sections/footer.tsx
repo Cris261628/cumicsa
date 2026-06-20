@@ -19,9 +19,9 @@ const footerLinks = {
     { name: "Consultoría", href: "#servicios" },
   ],
   contacto: [
-    { name: "+52 (55) 1234-5678", href: "tel:+525512345678" },
-    { name: "contacto@cumicsa.com", href: "mailto:contacto@cumicsa.com" },
-    { name: "Ciudad de México, México", href: "#contacto" },
+    { name: "+52 4436904931", href: "#" },
+    { name: "cumicsaconstrucciones@gmail.com", href: "mailto:cumicsaconstrucciones@gmail.com" },
+    { name: "Morelia, Michoacan", href: "#contacto" },
   ],
 }
 
@@ -64,7 +64,7 @@ export function Footer() {
               <span className="text-xl font-bold text-white">CUMICSA</span>
             </div>
             <p className="text-white/50 text-sm leading-relaxed mb-6">
-              Más de 20 años construyendo el futuro con excelencia, innovación y
+              Más de 35 años construyendo el futuro con excelencia, innovación y
               compromiso con nuestros clientes.
             </p>
             <div className="flex gap-3">
@@ -158,12 +158,6 @@ export function Footer() {
             © {new Date().getFullYear()} CUMICSA. Todos los derechos reservados.
           </p>
           <div className="flex gap-6 text-sm text-white/30">
-            <Link href="/privacidad" className="hover:text-primary transition-colors">
-              Política de Privacidad
-            </Link>
-            <Link href="/terminos" className="hover:text-primary transition-colors">
-              Términos y Condiciones
-            </Link>
           </div>
         </motion.div>
 

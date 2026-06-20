@@ -20,11 +20,11 @@ export function Contact() {
     {
       icon: MapPin,
       title: "Dirección",
-      content: "Av. Principal #123, Col. Centro, Ciudad de México, CP 06000",
+      content: "Av.Francisco y Madero #7565, Col.Sn Pascual, Morelia Michoacan, CP 58337",
     },
-    { icon: Phone, title: "Teléfono", content: "+52 (55) 1234-5678" },
-    { icon: Mail,  title: "Email",    content: "contacto@cumicsa.com" },
-    { icon: Clock, title: "Horario",  content: "Lunes a Viernes: 8:00 - 18:00" },
+    { icon: Phone, title: "Teléfono", content: "+52 4436904931" },
+    { icon: Mail, title: "Email", content: "cumicsaconstrucciones@gmail.com" },
+    { icon: Clock, title: "Horario", content: "Lunes a Viernes: 8:00 - 18:00" },
   ]
 
   return (
@@ -101,8 +101,7 @@ export function Contact() {
                 />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-white">CUMICSA</h3>
-                <p className="text-white/50">Construcción e Infraestructura</p>
+                <h3 className="text-2xl font-bold text-white">CUMICSA CONSRUCCIONES</h3>
               </div>
             </div>
 

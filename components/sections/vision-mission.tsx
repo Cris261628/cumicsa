@@ -41,12 +41,10 @@ export function VisionMission() {
         <RevealLift>
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <WeldingSpark />
               <h2 className="text-3xl md:text-5xl font-bold text-white">
                 Nuestra <span className="text-primary">Visión</span> y{" "}
                 <span className="text-primary/70">Misión</span>
               </h2>
-              <WeldingSpark />
             </div>
             <p className="text-white/60 max-w-2xl mx-auto text-lg">
               Comprometidos con la excelencia en cada proyecto que emprendemos
@@ -122,7 +120,7 @@ export function VisionMission() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { title: "Integridad", icon: "🏗️", description: "Actuamos con honestidad y transparencia" },
-              { title: "Calidad",    icon: "⭐",  description: "Excelencia en cada detalle" },
+              { title: "Calidad", icon: "⭐", description: "Excelencia en cada detalle" },
               { title: "Innovación", icon: "💡", description: "Soluciones creativas y modernas" },
               { title: "Compromiso", icon: "🤝", description: "Responsabilidad con cada proyecto" },
             ].map((value, index) => (
