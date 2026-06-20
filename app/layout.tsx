@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'CUMICSA' }],
   openGraph: {
     title: 'CUMICSA | Construcción e Infraestructura',
-    description: 'Más de 20 años de experiencia en construcción, infraestructura y desarrollo de proyectos que transforman comunidades.',
+    description: 'Más de 35 años de experiencia en construcción, infraestructura y desarrollo de proyectos que transforman comunidades.',
     type: 'website',
     locale: 'es_MX',
   },
