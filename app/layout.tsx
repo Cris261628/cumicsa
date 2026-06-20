@@ -14,7 +14,7 @@ const _geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'CUMICSA | Construcción e Infraestructura',
-  description: 'Más de 20 años de experiencia en construcción, infraestructura y desarrollo de proyectos que transforman comunidades. Construyendo el futuro con excelencia.',
+  description: 'Más de 35 años de experiencia en construcción, infraestructura y desarrollo de proyectos que transforman comunidades. Construyendo el futuro con excelencia.',
   keywords: ['construcción', 'infraestructura', 'proyectos', 'México', 'CUMICSA', 'edificación', 'obras civiles'],
   authors: [{ name: 'CUMICSA' }],
   openGraph: {
