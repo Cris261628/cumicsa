@@ -27,27 +27,22 @@ const FAN_POSITIONS = [
 ];
 
 function getResponsiveMultiplier(width: number) {
-  if (width < 480) return 0.28;
-  if (width < 640) return 0.38;
-  if (width < 768) return 0.5;
+  if (width < 480) return 0.10;
+  if (width < 640) return 0.16;
+  if (width < 768) return 0.24;
   if (width < 1024) return 0.75;
   return 1.0;
 }
 
-/**
- * Returns a multiplier (0..1] that scales y-offsets and entry animation
- * distances when the viewport is too short for the ideal layout height.
- */
 function getHeightMultiplier(width: number) {
-  // Ideal layout heights (in px at 16px root) matching the CSS breakpoints
   let idealPx: number;
-  if (width < 480) idealPx = 22 * 16;       // 352px
-  else if (width < 640) idealPx = 26 * 16;  // 416px
-  else if (width < 768) idealPx = 28 * 16;  // 448px
-  else if (width < 1024) idealPx = 34 * 16; // 544px
-  else idealPx = 38 * 16;                    // 608px
+  if (width < 480) idealPx = 22 * 16;
+  else if (width < 640) idealPx = 26 * 16;
+  else if (width < 768) idealPx = 28 * 16;
+  else if (width < 1024) idealPx = 34 * 16;
+  else idealPx = 38 * 16;
 
-  const available = window.innerHeight * 0.7; // 70vh budget
+  const available = window.innerHeight * 0.7;
   if (available >= idealPx) return 1;
   return available / idealPx;
 }
@@ -163,7 +158,6 @@ export default function SocialCards({ cards }: SocialCardsProps) {
 
     prevVisible.current = new Set(visibleMap.keys());
 
-    // Hover interactions
     const visibleEntries: { el: HTMLElement; slot: number }[] = [];
     cardElements.forEach((el, i) => {
       const slot = visibleMap.get(i);
@@ -258,39 +252,76 @@ export default function SocialCards({ cards }: SocialCardsProps) {
   );
 
   return (
-    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-4 md:px-8 relative z-20">
+    <section className="flex flex-col items-center w-full py-4 lg:py-8 px-4 md:px-8 relative z-20 overflow-hidden">
       <div className="flex items-center justify-center w-full max-w-[90rem]">
-        <div ref={containerRef} className="fan-layout flex relative justify-center items-center w-full max-w-[80rem]">
+        <div
+          ref={containerRef}
+          className="fan-layout flex relative justify-center items-center w-full max-w-[80rem] overflow-visible"
+          style={{ height: "clamp(180px, 45vw, 38rem)" }}
+
+        >
           {cards.map((card, index) => {
             const image = (
-              <div className="relative w-full h-full overflow-hidden">
-                <img src={card.imgUrl} loading="lazy" alt={card.alt || `Card ${index}`} className="absolute inset-0 w-full h-full object-cover z-10" />
+              <div className="relative w-full h-full overflow-hidden rounded-xl">
+                <img
+                  src={card.imgUrl}
+                  loading="lazy"
+                  alt={card.alt || `Card ${index}`}
+                  className="absolute inset-0 w-full h-full object-cover z-10"
+                />
               </div>
             );
             return card.linkUrl ? (
-              <a key={index} href={card.linkUrl} target={card.linkUrl.startsWith("http") ? "_blank" : "_self"} rel="noopener noreferrer" className="fan-card block cursor-pointer">{image}</a>
-            ) : (
-              <div key={index} className="fan-card">{image}</div>
-            );
-          })}
-        </div>
-      </div>
 
-      {needsPagination && (
-        <div className="flex items-center justify-center gap-4 mt-4 md:mt-6 z-30">
-          <button className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("left")} aria-label="Previous">
-            {chevron("left")}
-          </button>
-          <div className="flex items-center gap-2">
-            {cards.map((_, i) => (
-              <span key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === centerIndex ? "bg-black/70 dark:bg-white/80 scale-[1.3]" : "bg-black/15 dark:bg-white/15"}`} />
-            ))}
-          </div>
-          <button className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("right")} aria-label="Next">
-            {chevron("right")}
-          </button>
+              key = { index }
+                href = { card.linkUrl }
+            target = { card.linkUrl.startsWith("http") ? "_blank" : "_self" }
+            rel = "noopener noreferrer"
+            className = "fan-card block cursor-pointer"
+            style = {{
+              width: "clamp(70px, 18vw, 180px)",
+                aspectRatio: "4/3",
+          position: "absolute",
+          flexShrink: 0,
+                }}
+              >
+          {image}
+        </a>
+        ) : (
+        <div
+          key={index}
+          className="fan-card"
+          style={{
+            width: "clamp(70px, 18vw, 180px)",
+            aspectRatio: "4 / 3",
+            position: "absolute",
+            flexShrink: 0,
+          }}
+        >
+          {image}
         </div>
-      )}
-    </section>
+        );
+          })}
+      </div>
+    </div>
+
+      {
+    needsPagination && (
+      <div className="flex items-center justify-center gap-4 mt-4 md:mt-6 z-30">
+        <button className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("left")} aria-label="Previous">
+          {chevron("left")}
+        </button>
+        <div className="flex items-center gap-2">
+          {cards.map((_, i) => (
+            <span key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === centerIndex ? "bg-black/70 dark:bg-white/80 scale-[1.3]" : "bg-black/15 dark:bg-white/15"}`} />
+          ))}
+        </div>
+        <button className={`${ARROW_CLASSES} w-10 h-10 md:w-12 md:h-12`} onClick={() => cycle("right")} aria-label="Next">
+          {chevron("right")}
+        </button>
+      </div>
+    )
+  }
+    </section >
   );
 }

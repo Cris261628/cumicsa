@@ -224,7 +224,9 @@ const projects = [
 
 // ─── Card Fan Carousel ────────────────────────────────────────────────────────
 const MAX_VISIBLE = 9
+const MAX_VISIBLE_MOBILE = 3
 const HALF = Math.floor(MAX_VISIBLE / 2)
+const HALF_MOBILE = Math.floor(MAX_VISIBLE_MOBILE / 2)
 
 const FAN_POSITIONS = [
   { rot: -32, scale: 0.62, x: -28, y: 14.0, zIndex: 1 },
@@ -238,12 +240,23 @@ const FAN_POSITIONS = [
   { rot: 32, scale: 0.62, x: 28, y: 14.0, zIndex: 1 },
 ]
 
+// 3-card fan positions for mobile — amplio y bien espaciado
+const FAN_POSITIONS_MOBILE = [
+  { rot: -18, scale: 0.78, x: -12, y: 5.0, zIndex: 3 },
+  { rot: 0, scale: 1.00, x: 0, y: 0.0, zIndex: 10 },
+  { rot: 18, scale: 0.78, x: 12, y: 5.0, zIndex: 3 },
+]
+
 function getResponsiveMultiplier(width: number) {
-  if (width < 480) return 0.28
-  if (width < 640) return 0.40
-  if (width < 768) return 0.54
-  if (width < 1024) return 0.76
-  return 1.0
+  if (width < 480) return 0.38
+  if (width < 640) return 0.50
+  if (width < 768) return 0.64
+  if (width < 1024) return 0.82
+  return 1.5
+}
+
+function isMobileWidth(width: number) {
+  return width < 768
 }
 
 function getHeightMultiplier() {
@@ -253,7 +266,8 @@ function getHeightMultiplier() {
   return available / idealPx
 }
 
-function getSlotConfig(slot: number) {
+function getSlotConfig(slot: number, mobile: boolean) {
+  if (mobile) return FAN_POSITIONS_MOBILE[slot] ?? FAN_POSITIONS_MOBILE[HALF_MOBILE]
   return FAN_POSITIONS[slot] ?? FAN_POSITIONS[HALF]
 }
 
@@ -277,17 +291,28 @@ function FanCarousel({ cards }: FanCarouselProps) {
   const directionRef = useRef<"left" | "right" | null>(null)
   const prevVisible = useRef<Set<number>>(new Set())
   const [activeCard, setActiveCard] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const update = () => setIsMobile(isMobileWidth(window.innerWidth))
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
+
+  const maxVisible = isMobile ? MAX_VISIBLE_MOBILE : MAX_VISIBLE
+  const half = isMobile ? HALF_MOBILE : HALF
 
   const totalCards = cards.length
-  const [centerIndex, setCenterIndex] = useState(HALF)
+  const [centerIndex, setCenterIndex] = useState(half)
 
   const getVisibleMap = useCallback((center: number) => {
     const map = new Map<number, number>()
-    for (let slot = 0; slot < MAX_VISIBLE; slot++) {
-      map.set(((center + slot - HALF) % totalCards + totalCards) % totalCards, slot)
+    for (let slot = 0; slot < maxVisible; slot++) {
+      map.set(((center + slot - half) % totalCards + totalCards) % totalCards, slot)
     }
     return map
-  }, [totalCards])
+  }, [totalCards, maxVisible, half])
 
   const cycle = useCallback((direction: "left" | "right") => {
     if (isAnimating.current) return
@@ -316,6 +341,8 @@ function FanCarousel({ cards }: FanCarouselProps) {
       const isFirst = !hasEntered.current
       const mult = getResponsiveMultiplier(window.innerWidth)
       const hMult = getHeightMultiplier()
+      const mobile = isMobileWidth(window.innerWidth)
+      const centerSlot = mobile ? HALF_MOBILE : HALF
 
       if (isFirst) isAnimating.current = true
 
@@ -328,7 +355,7 @@ function FanCarousel({ cards }: FanCarouselProps) {
         const wasVis = prevVis.has(idx)
 
         if (slot !== undefined) {
-          const { x, y, rot, scale, zIndex } = getSlotConfig(slot)
+          const { x, y, rot, scale, zIndex } = getSlotConfig(slot, mobile)
           const target = { x: `${x * mult}rem`, y: `${y * hMult}rem`, rotation: rot, scale, opacity: 1, zIndex }
 
           if (isFirst) {
@@ -358,13 +385,14 @@ function FanCarousel({ cards }: FanCarouselProps) {
 
       let activeSlot: number | null = null
       let leaveTimer: NodeJS.Timeout | null = null
-      const centerSlot = HALF
 
       const updateHover = (hovSlot: number | null) => {
         const m = getResponsiveMultiplier(window.innerWidth)
         const hM = getHeightMultiplier()
+        const mob = isMobileWidth(window.innerWidth)
+        const cSlot = mob ? HALF_MOBILE : HALF
         visEntries.forEach(({ el, slot }) => {
-          const base = getSlotConfig(slot)
+          const base = getSlotConfig(slot, mob)
           let tx = base.x * m, ty = base.y * hM, tr = base.rot, ts = base.scale, delay = 0
           if (hovSlot !== null) {
             const dist = Math.abs(slot - hovSlot)
@@ -372,13 +400,13 @@ function FanCarousel({ cards }: FanCarouselProps) {
             if (slot === hovSlot) {
               ty -= 2.5 * hM; ts *= 1.10
             } else {
-              const norm = centerSlot > 0 ? (slot - centerSlot) / centerSlot : 0
+              const norm = cSlot > 0 ? (slot - cSlot) / cSlot : 0
               const push = 8 * (1 - Math.abs(norm)) * (1 + 0.2 * Math.max(0, 3 - dist))
               if (slot < hovSlot) { tx -= push * m; tr -= 3 / (dist + 1) }
               else { tx += push * m; tr += 3 / (dist + 1) }
             }
           } else {
-            delay = Math.abs(slot - centerSlot) * 0.02
+            delay = Math.abs(slot - cSlot) * 0.02
           }
           gsap.to(el, { x: `${tx}rem`, y: `${ty}rem`, rotation: tr, scale: ts, duration: 0.48, delay, ease: "elastic.out(1,.75)", overwrite: "auto" })
           gsap.set(el, { zIndex: base.zIndex })
@@ -417,7 +445,7 @@ function FanCarousel({ cards }: FanCarouselProps) {
 
     const cleanup = run()
     return () => { cleanup.then(fn => fn?.()) }
-  }, [centerIndex, totalCards, getVisibleMap])
+  }, [centerIndex, totalCards, getVisibleMap, isMobile])
 
   const chevron = (dir: "left" | "right") => (
     <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -432,20 +460,52 @@ function FanCarousel({ cards }: FanCarouselProps) {
   return (
     <div className="flex flex-col items-center w-full">
 
-      {/* Abanico */}
-      <div className="flex items-center justify-center w-full">
+      {/* ── Título pegado visualmente al abanico ── */}
+      <div className="text-center w-full mb-0">
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-2 md:mb-3">
+          Algunos de nuestros{" "}
+          <span className="text-primary relative inline-block">
+            trabajos
+            <motion.span
+              className="absolute left-0 bottom-1 w-full h-3 bg-primary/20 -z-10 rounded"
+              initial={{ width: 0 }}
+              whileInView={{ width: "100%" }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+            />
+          </span>
+        </h2>
+        <p className="text-white/60 max-w-2xl mx-auto text-sm md:text-lg mb-0">
+          Más de 35 años ejecutando proyectos de infraestructura, obra civil e hidráulica en todo México.
+        </p>
+      </div>
+
+      {/* ── Abanico con flechas a los lados ── */}
+      <div className="relative flex items-center justify-center w-full md:-mt-44">
+
+        {/* Flecha izquierda */}
+        <button
+          className={`${ARROW_CLASSES} absolute left-0 md:left-2 top-1/2 -translate-y-1/2`}
+          style={{ zIndex: 40 }}
+          onClick={() => cycle("left")}
+          aria-label="Anterior"
+        >
+          {chevron("left")}
+        </button>
+
+        {/* Fan container */}
         <div
           ref={containerRef}
           className="relative flex justify-center items-end w-full"
-          style={{ height: "clamp(260px, 44vw, 540px)" }}
+          style={{ height: isMobile ? "clamp(160px, 45vw, 220px)" : "clamp(400px, 60vw, 680px)" }}
         >
           {cards.map((card, index) => (
             <div
               key={index}
               className="fan-card absolute cursor-pointer"
               style={{
-                width: "clamp(110px, 14vw, 185px)",
-                height: "clamp(170px, 24vw, 320px)",
+                width: isMobile ? "clamp(80px, 24vw, 110px)" : "clamp(300px, 36vw, 460px)",
+                height: isMobile ? "clamp(110px, 34vw, 160px)" : "clamp(230px, 28vw, 390px)",
                 borderRadius: "1rem",
                 overflow: "hidden",
                 willChange: "transform",
@@ -458,60 +518,60 @@ function FanCarousel({ cards }: FanCarouselProps) {
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover"
               />
-              {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              {/* Año en la esquina inferior */}
               <div className="absolute bottom-3 left-3">
-                <span className="text-white/90 text-xs font-bold tracking-widest">
-                  {card.year}
-                </span>
+                <span className="text-white/90 text-xs font-bold tracking-widest">{card.year}</span>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Flecha derecha */}
+        <button
+          className={`${ARROW_CLASSES} absolute right-0 md:right-2 top-1/2 -translate-y-1/2`}
+          style={{ zIndex: 40 }}
+          onClick={() => cycle("right")}
+          aria-label="Siguiente"
+        >
+          {chevron("right")}
+        </button>
       </div>
 
-      {/* Panel info al hacer hover */}
-      <div className="relative w-full max-w-lg mx-auto mt-6 h-20">
+      {/* ── Descripción al hacer hover — más separada del fan ── */}
+      <div className="relative w-full max-w-lg mx-auto mt-10 md:mt-12 h-16 px-10">
         {info ? (
           <motion.div
             key={info.title}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.22 }}
-            className="absolute inset-0 flex flex-col justify-center items-center text-center px-6"
+            className="absolute inset-0 flex flex-col justify-center items-center text-center px-4"
           >
-            <span className="text-primary text-xs font-semibold uppercase tracking-widest mb-2">
+            <span className="text-primary text-xs font-semibold uppercase tracking-widest mb-1">
               {info.year}
             </span>
-            <h3 className="text-white font-bold text-sm md:text-base leading-snug line-clamp-2">
+            <h3 className="text-white font-bold text-xs md:text-sm leading-snug line-clamp-2">
               {info.title}
             </h3>
           </motion.div>
         ) : (
-          <p className="absolute inset-0 flex items-center justify-center text-white/25 text-sm italic">
+          <p className="absolute inset-0 flex items-center justify-center text-white/25 text-xs md:text-sm italic text-center px-4">
             Pasa el cursor sobre un proyecto para ver los detalles
           </p>
         )}
       </div>
 
-      {/* Paginación */}
-      <div className="flex items-center justify-center gap-4 mt-3 z-30">
-        <button className={ARROW_CLASSES} onClick={() => cycle("left")} aria-label="Anterior">
-          {chevron("left")}
-        </button>
-        <div className="flex items-center gap-1.5">
+      {/* ── Dots de paginación ── */}
+      <div className="flex items-center justify-center gap-1 mt-3 z-30 w-full px-12 overflow-hidden">
+        <div className="flex items-center gap-1 flex-wrap justify-center max-w-[240px] md:max-w-none">
           {cards.map((_, i) => (
             <span
               key={i}
-              className={`rounded-full transition-all duration-300 ${i === centerIndex ? "bg-primary w-5 h-1.5" : "bg-white/20 w-1.5 h-1.5"
+              className={`rounded-full transition-all duration-300 shrink-0 ${i === centerIndex ? "bg-primary w-4 h-1.5" : "bg-white/20 w-1.5 h-1.5"
                 }`}
             />
           ))}
         </div>
-        <button className={ARROW_CLASSES} onClick={() => cycle("right")} aria-label="Siguiente">
-          {chevron("right")}
-        </button>
       </div>
 
     </div>
@@ -521,7 +581,7 @@ function FanCarousel({ cards }: FanCarouselProps) {
 // ─── Sección principal ────────────────────────────────────────────────────────
 export function Projects() {
   return (
-    <section id="proyectos" className="py-24 bg-[#0B1220] relative overflow-hidden">
+    <section id="proyectos" className="py-16 md:py-24 bg-[#0B1220] relative overflow-hidden">
 
       {/* Fondo: glows */}
       <div className="absolute top-[-200px] left-[-150px] w-[500px] h-[500px] bg-primary/20 blur-3xl rounded-full pointer-events-none" />
@@ -538,36 +598,8 @@ export function Projects() {
       <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-[#0B1220]/80 to-[#101B31] pointer-events-none" />
 
       <div className="container mx-auto px-4 relative z-10">
-
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Algunos de nuestros{" "}
-            <span className="text-primary relative inline-block">
-              trabajos
-              <motion.span
-                className="absolute left-0 bottom-1 w-full h-3 bg-primary/20 -z-10 rounded"
-                initial={{ width: 0 }}
-                whileInView={{ width: "100%" }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-              />
-            </span>
-          </h2>
-          <p className="text-white/60 max-w-2xl mx-auto text-lg">
-            Más de 35 años ejecutando proyectos de infraestructura, obra civil e hidráulica en todo México.
-          </p>
-        </motion.div>
-
-        {/* Fan carousel */}
+        {/* El título ahora vive dentro del FanCarousel */}
         <FanCarousel cards={projects} />
-
       </div>
     </section>
   )
