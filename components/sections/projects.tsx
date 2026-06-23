@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useState, useEffect, useRef, useCallback } from "react"
+import Link from "next/link";
 
 // ─── Datos de proyectos ───────────────────────────────────────────────────────
 // INSTRUCCIONES: Reemplaza cada "imgUrl" con la URL de Cloudflare de tu imagen.
@@ -582,6 +583,7 @@ function FanCarousel({ cards }: FanCarouselProps) {
 export function Projects() {
   return (
     <section id="proyectos" className="py-16 md:py-24 bg-[#0B1220] relative overflow-hidden">
+      {/* CTA hacia la página de Trayectoria */}
 
       {/* Fondo: glows */}
       <div className="absolute top-[-200px] left-[-150px] w-[500px] h-[500px] bg-primary/20 blur-3xl rounded-full pointer-events-none" />
@@ -600,6 +602,15 @@ export function Projects() {
       <div className="container mx-auto px-4 relative z-10">
         {/* El título ahora vive dentro del FanCarousel */}
         <FanCarousel cards={projects} />
+      </div>
+      <div className="flex justify-center py-8 md:py-10">
+
+        <Link
+          href="/trayectoria"
+          className="relative z-50 inline-flex items-center gap-2 bg-[#E8922A] hover:bg-[#d6831f] text-white font-semibold no-underline px-6 py-3 rounded-full transition-colors shadow-lg"
+        >
+          ¿Quieres ver la trayectoria? Da clic aquí
+        </Link>
       </div>
     </section>
   )

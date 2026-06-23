@@ -25,6 +25,12 @@ const categoryConfig: Record<ObraItem["category"], { label: string; color: strin
 // ─── Todas las obras del CV ───────────────────────────────────────────────────
 const obrasPorAño: { year: string; obras: ObraItem[] }[] = [
     {
+        year: "1984",
+        obras: [
+            { year: "1984", title: "Se inicio con el periodo de los trabajos para la empresa grupo papelero scribe, s.a. De c.v. (antes crisoba industrial) en diversas actividades y obras, tales como construcción de vialidades, plataformas, mantenimiento a las instalaciones de la planta así como la construcción de un área para disposición de residuos solidos en un área de 7,500 m2 con un movimiento de 35,000 m3", client: "Grupo Papelero Scribe S.A. de C.V. (antes Crisoba Industrial)", category: "terraceria" },
+        ],
+    },
+    {
         year: "2002",
         obras: [
             { year: "2002", title: 'Construcción de terracerías y plataformas en vialidades del Conjunto Habitacional "La Cantera", Tarímbaro, Mich.', client: "ICI Ingeniería y Construcción Integral S.A. de C.V.", category: "terraceria" },
@@ -125,14 +131,9 @@ const obrasPorAño: { year: string; obras: ObraItem[] }[] = [
         ],
     },
     {
-        year: "1984–2016",
-        obras: [
-            { year: "1984–2016", title: "Construcción de vialidades, plataformas, mantenimiento a instalaciones de planta y construcción de área para disposición de residuos sólidos (7,500 m² / 35,000 m³) en diversas etapas", client: "Grupo Papelero Scribe S.A. de C.V. (antes Crisoba Industrial)", category: "terraceria" },
-        ],
-    },
-    {
         year: "2016",
         obras: [
+            { year: "2016", title: "termino del periodo de los trabajos para la empresa grupo papelero scribe, s.a. De c.v. (antes crisoba industrial) en diversas actividades y obras", client: "Grupo Papelero Scribe S.A. de C.V. (antes Crisoba Industrial)", category: "terraceria" },
             { year: "2016", title: "Trabajos de urbanización en Módulo 2 y Módulo 3 para el Desarrollo Parque Solé (Obra 1499), Parcela 296-A, Ejido Peña del Panal, Municipio de Tarímbaro", client: "Desarrollo Parque Solé", category: "terraceria" },
         ],
     },
@@ -331,7 +332,7 @@ export default function TrayectoriaPage() {
                         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
                         className="text-[#E8922A] text-[10px] md:text-[11px] font-bold tracking-[0.2em] md:tracking-[0.25em] uppercase mb-3"
                     >
-                        Historial de Obras 2002 – 2023
+                        Historial de Obras 1984 – 2023
                     </motion.p>
                     <motion.h1
                         initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.08 }}
