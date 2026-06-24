@@ -186,7 +186,7 @@ const projects = [
   },
   {
     id: 30,
-    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/imgnormal_3_uqubcs.png",
+    imgUrl: "https://res.cloudinary.com/diz9yyh6r/image/upload/v1782272358/imgnormal_9_xqunla.jpg",
     title: "CUMICSA construyendo el futuro",
     year: "",
   },
